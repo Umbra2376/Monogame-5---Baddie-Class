@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -41,9 +41,9 @@ namespace Monogame_5___Baddie_Class
             mouseState = Mouse.GetState();
             for (int i = 0; i <= 20; i++)
             {
-                Ghost temp = new Ghost(ghostTextures, new Rectangle(generator.Next(window.Width - 40), generator.Next(window.Height - 40), 40, 40));
+                Ghost temp = new Ghost(ghostTextures, new Rectangle(generator.Next(window.Width - 40), generator.Next(window.Height - 40), generator.Next(30, 50), generator.Next(30, 50)), generator.Next(1, 6));
                 while (temp.Contains(mouseState.Position))
-                    temp = new Ghost(ghostTextures, new Rectangle(generator.Next(window.Width - 40), generator.Next(window.Height - 40), 40, 40));
+                    temp = new Ghost(ghostTextures, new Rectangle(generator.Next(window.Width - 40), generator.Next(window.Height - 40), generator.Next(30, 50), generator.Next(30, 50)), generator.Next(1, 6));
 
                 ghosts.Add(temp);
             }
