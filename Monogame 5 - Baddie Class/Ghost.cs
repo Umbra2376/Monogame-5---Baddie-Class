@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -15,6 +15,7 @@ namespace Monogame_5___Baddie_Class
         private List<Texture2D> _textures;
         private float _animationSpeed;
         private float _seconds;
+        private float _moveSpeed;
         private float _alpha;
         private Vector2 _speed;
         private Rectangle _location;
@@ -25,7 +26,7 @@ namespace Monogame_5___Baddie_Class
         {
             get { return _location; }
         }
-        public Ghost(List<Texture2D> textures, Rectangle location)
+        public Ghost(List<Texture2D> textures, Rectangle location, float moveSpeed)
         {
             _textures = textures;
             _speed = Vector2.Zero;
@@ -34,37 +35,39 @@ namespace Monogame_5___Baddie_Class
             _direction = SpriteEffects.None;
             _seconds = 0;
             _animationSpeed = 0.2f;
+            _alpha = 0.1f;
+            _moveSpeed = moveSpeed;
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_textures[_textureIndex], _location, null, Color.White, 0f, Vector2.Zero, _direction, 1);
+            spriteBatch.Draw(_textures[_textureIndex], _location, null, Color.White * _alpha, 0f, Vector2.Zero, _direction, 0f);
         }
         public void Update(GameTime gameTime, MouseState mouseState)
         {
             if (mouseState.X < _location.X)
             {
                 _direction = SpriteEffects.FlipHorizontally;
-                _speed.X = -1;
+                _speed.X = -_moveSpeed;
             }
             else if (mouseState.X > _location.X)
             {
                 _direction = SpriteEffects.None;
-                _speed.X = 1;
+                _speed.X = _moveSpeed;
             }
             if (mouseState.Y < _location.Y)
             {
-                _speed.Y = -1;
+                _speed.Y = -_moveSpeed;
             }
             else if (mouseState.Y > _location.Y)
             {
-                _speed.Y = 1;
+                _speed.Y = _moveSpeed;
             }
             if (mouseState.LeftButton == ButtonState.Released)
             {
                 _speed = Vector2.Zero;
                 _textureIndex = 0;
                 _seconds = 0f;
-                _alpha = 0.3f;
+                _alpha = 0.1f;
             }
             else if (_speed != Vector2.Zero)
             {
@@ -72,6 +75,25 @@ namespace Monogame_5___Baddie_Class
                 if (_seconds > _animationSpeed)
                 {
                     _seconds = 0;
+                    _textureIndex++;
+                    if (_textureIndex >= _textures.Count)
+                        _textureIndex = 1;
+                    _speed = Vector2.Zero;
+                    _alpha = 1f;
+                }
+            }
+            _location.Offset(_speed);
+        }
+        public bool Contains(Point player)
+        {
+            return _location.Contains(player);
+        }
+        public bool Intersects(Rectangle player)
+        {
+            return _location.Intersects(player);
+        }
+    }
+}
                     _textureIndex++;
                     if (_textureIndex >= _textures.Count)
                         _textureIndex = 1;
