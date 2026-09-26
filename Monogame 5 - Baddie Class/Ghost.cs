@@ -94,22 +94,3 @@ namespace Monogame_5___Baddie_Class
         }
     }
 }
-                    _textureIndex++;
-                    if (_textureIndex >= _textures.Count)
-                        _textureIndex = 1;
-                    _speed = Vector2.Zero;
-                    _alpha = 1f;
-                }
-            }
-            _location.Offset(_speed);
-        }
-        public bool Contains(Point player)
-        {
-            return _location.Contains(player);
-        }
-        public bool Intersects(Rectangle player)
-        {
-            return _location.Intersects(player);
-        }
-    }
-}
